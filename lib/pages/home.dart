@@ -45,9 +45,9 @@ class _HomeState extends State<Home> {
 
 
   Widget _evaluarYObtenerLista(List<Lista> listas, BuildContext contextCorrecto, SnackBar snackBar){
-    if(listas== null){
+    if(listas== null || listas.length==0){
       return Center(
-        child: Text("No hay datos") 
+        child: Text("No hay listas, pulse el boton para añadir") 
       );
     }else{
       return ListView.builder(
@@ -89,16 +89,6 @@ class _HomeState extends State<Home> {
     );
   }
 
-  /*Widget _getBackgrodundDismissible(IconData icon, MaterialColor color, bool izda){
-    return Container(
-        alignment: izda?Alignment.centerLeft:Alignment.centerRight,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Icon(icon),
-        ),
-        color:  color// Colors.red,
-      );
-  }*/
 
   _mostrarDialogo(BuildContext _context, String texto, bool nuevo, int index){
     final myController =TextEditingController();
@@ -124,16 +114,20 @@ class _HomeState extends State<Home> {
             FlatButton(
               child: Text(nuevo?"Crear":"Guardar"),
               onPressed: () =>{
-                if(nuevo){
-                  _nuevaLista(myController),
-                  Navigator.pop(context, true),
-                  _renovarEstado(),
+                if(myController.text!=null && myController.text.trim()!=''){
+                  if(nuevo){
+                    _nuevaLista(myController),
+                    Navigator.pop(context, true),
+                    _renovarEstado(),
+                  }else{
+                    _editarTitulo(myController, index),
+                    Navigator.pop(context, true),
+                    _renovarEstado(),
+                  }
                 }else{
-                  _editarTitulo(myController, index),
-                  Navigator.pop(context, true),
-                  _renovarEstado(),
+                   Navigator.pop(context, true),
+                   _renovarEstado(),
                 }
-                
               },
             ),
           ],
@@ -158,8 +152,8 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
 
-  irDetallesLista(int index){
-    Navigator.pushNamed(context, "detalles", arguments: index);
+  irDetallesLista(int index) async{
+    await Navigator.pushNamed(context, "detalles", arguments: index);
     _renovarEstado();
   }
 
