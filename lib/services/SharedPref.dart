@@ -3,8 +3,7 @@
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do/models/Lista.dart';
-import 'dart:convert';
-import 'dart:developer';
+
 
 class SharedPref{
 
