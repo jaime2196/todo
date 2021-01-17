@@ -63,10 +63,5 @@ class UtilLista{
     return listaListas;
   }
 
-  static _listaTareas(json){
-    List<Tarea> lista= new List<Tarea>();
-    if(json!=null){
-
-    }
-  }
+  
 }
