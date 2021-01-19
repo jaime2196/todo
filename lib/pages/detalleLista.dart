@@ -35,9 +35,20 @@ class _DetalleListaState extends State<DetalleLista> {
       ),
     );
 
+    final TextStyle style = Theme.of(context).textTheme.headline6.copyWith(
+      fontSize: 20,
+      fontWeight: FontWeight.normal,
+      color: Colors.white
+    );
+
 
     return Scaffold(
-      appBar: AppBar( title: Text(lista.nombreLista)),
+      appBar: AppBar( title: 
+        Hero(
+          tag: lista.nombreLista,
+          child: Text(lista.nombreLista,style: style),
+        )
+      ),
       body: Builder(
         builder: (contextoCorrecto) => 
            _bodyScafold(myController, snackBar, contextoCorrecto)

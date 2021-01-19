@@ -17,7 +17,7 @@ class _HomeState extends State<Home> {
   int indiceListaSalvar;
   @override
   Widget build(BuildContext context) {
-    final snackBar = SnackBar(
+  final snackBar = SnackBar(
     content: Text('Se ha eliminado la tarea'),
     action: SnackBarAction(
       label: "Deshacer",
@@ -26,6 +26,8 @@ class _HomeState extends State<Home> {
       },
     ),
   );
+
+  
 
     return Scaffold(
       appBar: AppBar( title: Text('To Do'), ),
@@ -61,6 +63,11 @@ class _HomeState extends State<Home> {
   }
 
   Widget _generarListTile(int index, BuildContext contextCorrecto, SnackBar snackBar){
+    final TextStyle style = Theme.of(context).textTheme.headline6.copyWith(
+      fontSize: 15,
+      fontWeight: FontWeight.normal,
+    );
+
     return Dismissible(
       confirmDismiss: (direccion) async{
         if(direccion== DismissDirection.startToEnd){
@@ -78,14 +85,17 @@ class _HomeState extends State<Home> {
         log(direccion.index.toString()),
         _eliminaroEditarLista(index, contextCorrecto, snackBar, direccion),
       },
-      child: ListTile(
-        //leading: Text(listas[index].tareas.length.toString()),
-        subtitle: listas[index].tareas.length==1?Text('${listas[index].tareas.length.toString()} tarea'): Text('${listas[index].tareas.length.toString()} tareas'),
-        title: Text(listas[index].nombreLista),
-        onTap: ()=>{
-          irDetallesLista(index),
-        },
-      ),
+      child:  ListTile(
+          //leading: Text(listas[index].tareas.length.toString()),
+          subtitle: listas[index].tareas.length==1?Text('${listas[index].tareas.length.toString()} tarea'): Text('${listas[index].tareas.length.toString()} tareas'),
+          title: Hero(
+            tag: listas[index].nombreLista,
+            child: Text(listas[index].nombreLista,style: style,)),
+          onTap: ()=>{
+            irDetallesLista(index),
+          },
+        ),
+      
     );
   }
 
