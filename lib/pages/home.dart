@@ -89,7 +89,7 @@ class _HomeState extends State<Home> {
           //leading: Text(listas[index].tareas.length.toString()),
           subtitle: listas[index].tareas.length==1?Text('${listas[index].tareas.length.toString()} tarea'): Text('${listas[index].tareas.length.toString()} tareas'),
           title: Hero(
-            tag: listas[index].nombreLista,
+            tag: listas[index].id,
             child: Text(listas[index].nombreLista,style: style,)),
           onTap: ()=>{
             irDetallesLista(index),
@@ -148,7 +148,7 @@ class _HomeState extends State<Home> {
 
 
   _nuevaLista(TextEditingController _controller){
-    Lista lista= new Lista(nombreLista: _controller.text, tareas: List<Tarea>());
+    Lista lista= new Lista(nombreLista: _controller.text, tareas: List<Tarea>(), id: DateTime.now().millisecondsSinceEpoch);
     SharedPref.addLista(lista);
   }
 

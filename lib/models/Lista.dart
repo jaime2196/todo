@@ -13,19 +13,23 @@ String listaToJson(Lista data) => json.encode(data.toJson());
 
 class Lista {
     Lista({
+        this.id,
         this.nombreLista,
         this.tareas,
     });
 
+    int id;
     String nombreLista;
     List<Tarea> tareas;
 
     factory Lista.fromJson(Map<String, dynamic> json) => Lista(
+        id: json["id"],
         nombreLista: json["nombreLista"],
         tareas: List<Tarea>.from(json["tareas"].map((x) => Tarea.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
+        "id": id,
         "nombreLista": nombreLista,
         "tareas": List<dynamic>.from(tareas.map((x) => x.toJson())),
     };

@@ -45,7 +45,7 @@ class _DetalleListaState extends State<DetalleLista> {
     return Scaffold(
       appBar: AppBar( title: 
         Hero(
-          tag: lista.nombreLista,
+          tag: lista.id,
           child: Text(lista.nombreLista,style: style),
         )
       ),
