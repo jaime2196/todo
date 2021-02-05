@@ -4,3 +4,4 @@ Aplicación para crear listas y notas rápidas. Hecho en [Flutter💙](https://f
 
 ## [Jaime Señoret](https://jaimesenore.web.app)
 
+
