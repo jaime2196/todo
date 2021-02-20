@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:to_do/models/Lista.dart';
 import 'package:to_do/services/SharedPref.dart';
+import 'package:to_do/util/tutorialHelper.dart';
 import 'dart:developer';
 import 'package:to_do/util/utils.dart';
+import 'package:tutorial/tutorial.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -15,23 +17,37 @@ class _HomeState extends State<Home> {
   List<Lista> listas= SharedPref.getListas();
   Lista listaSalvar;
   int indiceListaSalvar;
+  List<TutorialItens> itens = [];
+  final keyFAB = GlobalKey();
+  bool tutorial=true;
+  
   @override
   Widget build(BuildContext context) {
-  final snackBar = SnackBar(
-    content: Text('Se ha eliminado la tarea'),
-    action: SnackBarAction(
-      label: "Deshacer",
-      onPressed: ()=>{
-        _deshacerBorrado(),
-      },
-    ),
-  );
-
+    itens.add(TutorialHelper.getAyuda(keyFAB,"Pulse en el botón para crear su primera lista.", ShapeFocus.oval),);
+    
   
+    final snackBar = SnackBar(
+      content: Text('Se ha eliminado la tarea'),
+      action: SnackBarAction(
+        label: "Deshacer",
+        onPressed: ()=>{
+          _deshacerBorrado(),
+        },
+      ),
+    );
+
+    if(SharedPref.isPrimeraVez() && tutorial){
+      tutorial=false;
+      Future.delayed(Duration(milliseconds: 3000),(){
+        Tutorial.showTutorial(context, itens);
+      });
+    }
+    
 
     return Scaffold(
-      appBar: AppBar( title: Text('To Do'), ),
+      appBar: _crearAppBar(),
       floatingActionButton: FloatingActionButton(
+        key: keyFAB,
         child: Icon(Icons.add),
         onPressed: ()=>{
           _mostrarDialogo(context, "Titulo de la nueva lista", true,0)
@@ -43,7 +59,37 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
+    
   }
+
+  Widget _crearAppBar(){
+    return AppBar(
+        title: Text('To Do'),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: handleClick,
+            itemBuilder: (BuildContext context) {
+              return {'Logout', 'Settings'}.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
+        ],
+      );
+  }
+
+  void handleClick(String value) {
+    switch (value) {
+      case 'Logout':
+        log("Logout");
+        break;
+      case 'Settings':
+        break;
+    }
+}
 
 
   Widget _evaluarYObtenerLista(List<Lista> listas, BuildContext contextCorrecto, SnackBar snackBar){
@@ -189,4 +235,6 @@ class _HomeState extends State<Home> {
     }
     
   }
+
+  
 }

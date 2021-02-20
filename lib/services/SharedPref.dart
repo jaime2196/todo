@@ -31,16 +31,16 @@ class SharedPref{
     return null;
   }
 
-static void addLista(Lista lista){
-  List<Lista> listas= getListas();
-  if(listas!=null){
-    listas.add(lista);
-  }else{
-    listas = new List<Lista>();
-    listas.add(lista);
+  static void addLista(Lista lista){
+    List<Lista> listas= getListas();
+    if(listas!=null){
+      listas.add(lista);
+    }else{
+      listas = new List<Lista>();
+      listas.add(lista);
+    }
+    setListas(listas);
   }
-  setListas(listas);
-}
 
   static setListas(List<Lista> lista ) {
     String json = listaListaToJson(lista);
@@ -50,5 +50,17 @@ static void addLista(Lista lista){
 
   static limpiar(){
     _sharedPreferences.setString('datos',  null);
+  }
+
+  static isPrimeraVez(){
+    bool datos= _sharedPreferences.getBool('primeraVez');
+    if(datos==null){
+      return true;
+    }
+    return datos;
+  }
+
+  static setPrimeraVez(bool valor){
+    _sharedPreferences.setBool("primeraVez", valor);
   }
 }

@@ -6,6 +6,7 @@ import 'package:to_do/services/SharedPref.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPref.init();
+  //SharedPref.setPrimeraVez(true);
   runApp(MyApp());
 }
 

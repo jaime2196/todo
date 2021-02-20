@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:to_do/models/Lista.dart';
 
 import 'package:to_do/services/SharedPref.dart';
+import 'package:to_do/util/tutorialHelper.dart';
 import 'dart:developer';
 import 'package:to_do/util/utils.dart';
+import 'package:tutorial/tutorial.dart';
 
 class DetalleLista extends StatefulWidget {
   DetalleLista({Key key}) : super(key: key);
@@ -17,6 +19,11 @@ class _DetalleListaState extends State<DetalleLista> {
   int indice;
   Tarea tareaSalvar;
   int indiceTareaSalvar;
+  final keyInput = GlobalKey();
+  final keyCheck = GlobalKey();
+  final keyText = GlobalKey();
+  List<TutorialItens> itemTutorial = [];
+  bool tutorial1=true;
   
   @override
   Widget build(BuildContext context) {
@@ -41,6 +48,17 @@ class _DetalleListaState extends State<DetalleLista> {
       color: Colors.white
     );
 
+    if(SharedPref.isPrimeraVez() && tutorial1){
+      tutorial1=false;
+      Future.delayed(Duration(milliseconds: 3000),(){
+        itemTutorial.add(TutorialHelper.getAyuda(keyInput, "Escribir",ShapeFocus.square),);
+        itemTutorial.add(TutorialHelper.getAyuda(keyCheck, "Puede marcar la tarea como completada",ShapeFocus.oval));
+        itemTutorial.add(TutorialHelper.getAyuda(keyText, "Aquí se muestra el título de su tarea",ShapeFocus.square));
+        Tutorial.showTutorial(context, itemTutorial);
+        SharedPref.setPrimeraVez(false);
+      });
+    }
+    
 
     return Scaffold(
       appBar: AppBar( title: 
@@ -84,6 +102,7 @@ class _DetalleListaState extends State<DetalleLista> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextField(
+            key: keyInput,
             decoration: InputDecoration(
               hintText: 'Nombre de la tarea'
             ),
@@ -103,26 +122,42 @@ class _DetalleListaState extends State<DetalleLista> {
   }
 
   Widget _evaluarTareas(SnackBar snackBar,BuildContext contextGeneral, TextEditingController controller){
-    if(lista.tareas!=null && lista.tareas.length!=0){
+    if(SharedPref.isPrimeraVez()){
       return Expanded(
-              child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          //separatorBuilder: (context,index) => Divider(color: Colors.black,thickness: 0.2,),
-          itemCount: lista.tareas!=null?lista.tareas.length:0,
-          itemBuilder: (context, indexTareas) => _generarListTile(indexTareas, snackBar, contextGeneral,controller)
-    ),
+        child: ListView(
+          children: [
+            ListTile(
+              leading: Checkbox(key: keyCheck,value: false, onChanged: null),
+              title: Text("Título de la tarea", key:keyText),
+              onTap: null
+            ),
+          ],
+        ),
       );
     }else{
-      return Center(
-        child: Text("No hay tareas"),
-      );
+      if(lista.tareas!=null && lista.tareas.length!=0){
+        return Expanded(
+                child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            //separatorBuilder: (context,index) => Divider(color: Colors.black,thickness: 0.2,),
+            itemCount: lista.tareas!=null?lista.tareas.length:0,
+            itemBuilder: (context, indexTareas) => _generarListTile(indexTareas, snackBar, contextGeneral,controller)
+      ),
+        );
+      }else{
+        return Center(
+          child: Text("No hay tareas"),
+        );
+      }
     }
+    
     
   }
 
   Widget _generarListTile(int indexTareas, SnackBar snackBar, BuildContext contextGeneral, TextEditingController controller){
     log("Index de tareas: $indexTareas");
+    
     return Dismissible(
       confirmDismiss: (direccion) async{
         if(direccion== DismissDirection.startToEnd){
@@ -152,6 +187,10 @@ class _DetalleListaState extends State<DetalleLista> {
         },
       ),
     );
+    
+      
+    
+    
   }
 
   eliminarTarea(int index, SnackBar snackBar, BuildContext contextGeneral){
