@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do/i18n/Languages.dart';
 import 'package:to_do/models/Lista.dart';
 
 import 'package:to_do/services/SharedPref.dart';
@@ -33,9 +34,9 @@ class _DetalleListaState extends State<DetalleLista> {
     lista= SharedPref.getLista(index);
     final myController = TextEditingController();
     final snackBar = SnackBar(
-      content: Text('Se ha eliminado la tarea'),
+      content: Text(Languages.of(context).labelTareaEliminada),
       action: SnackBarAction(
-        label: "Deshacer",
+        label: Languages.of(context).labelDeshacer,
         onPressed: ()=>{
           _deshacerBorrado(),
         },
@@ -104,7 +105,7 @@ class _DetalleListaState extends State<DetalleLista> {
           child: TextField(
             key: keyInput,
             decoration: InputDecoration(
-              hintText: 'Nombre de la tarea'
+              hintText: Languages.of(context).labelNombreTarea
             ),
             controller: myController,
             onSubmitted: (value) =>{
@@ -147,7 +148,7 @@ class _DetalleListaState extends State<DetalleLista> {
         );
       }else{
         return Center(
-          child: Text("No hay tareas"),
+          child: Text(Languages.of(context).labelNoTareas),
         );
       }
     }
@@ -156,7 +157,7 @@ class _DetalleListaState extends State<DetalleLista> {
   }
 
   Widget _generarListTile(int indexTareas, SnackBar snackBar, BuildContext contextGeneral, TextEditingController controller){
-    log("Index de tareas: $indexTareas");
+    //log("Index de tareas: $indexTareas");
     
     return Dismissible(
       confirmDismiss: (direccion) async{
@@ -207,7 +208,6 @@ class _DetalleListaState extends State<DetalleLista> {
   }
 
   cambiarEstadoTarea(int indiceTarea, bool nuevoValor){
-    log("Indice de listas: $indice , indice de tareas $indiceTarea");
     lista.tareas[indiceTarea].completada=nuevoValor;
     
     List<Lista> listas= SharedPref.getListas();

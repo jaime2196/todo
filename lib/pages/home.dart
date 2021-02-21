@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do/i18n/Languages.dart';
 import 'package:to_do/models/Lista.dart';
 import 'package:to_do/services/SharedPref.dart';
 import 'package:to_do/util/tutorialHelper.dart';
@@ -27,9 +28,9 @@ class _HomeState extends State<Home> {
     
   
     final snackBar = SnackBar(
-      content: Text('Se ha eliminado la tarea'),
+      content: Text(Languages.of(context).labelTareaEliminada),
       action: SnackBarAction(
-        label: "Deshacer",
+        label: Languages.of(context).labelDeshacer,
         onPressed: ()=>{
           _deshacerBorrado(),
         },
@@ -50,7 +51,7 @@ class _HomeState extends State<Home> {
         key: keyFAB,
         child: Icon(Icons.add),
         onPressed: ()=>{
-          _mostrarDialogo(context, "Titulo de la nueva lista", true,0)
+          _mostrarDialogo(context, Languages.of(context).labelNuevaLista, true,0)
         },
       ),
       body: Builder(
@@ -64,12 +65,12 @@ class _HomeState extends State<Home> {
 
   Widget _crearAppBar(){
     return AppBar(
-        title: Text('To Do'),
+        title: Text(Languages.of(context).appName),
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
-              return {'Logout', 'Settings'}.map((String choice) {
+              return {Languages.of(context).labelOpciones, Languages.of(context).labelInformacion}.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
@@ -81,13 +82,14 @@ class _HomeState extends State<Home> {
       );
   }
 
-  void handleClick(String value) {
-    switch (value) {
-      case 'Logout':
-        log("Logout");
-        break;
-      case 'Settings':
-        break;
+  void handleClick(String value)async {
+    if(Languages.of(context).labelOpciones==value){
+      await Navigator.pushNamed(context, "opciones");
+      setState(() {
+        
+      });
+    }else if(Languages.of(context).labelInformacion==value){
+      log("informacion");
     }
 }
 
@@ -95,7 +97,7 @@ class _HomeState extends State<Home> {
   Widget _evaluarYObtenerLista(List<Lista> listas, BuildContext contextCorrecto, SnackBar snackBar){
     if(listas== null || listas.length==0){
       return Center(
-        child: Text("No hay listas, pulse el boton para añadir") 
+        child: Text(Languages.of(context).labelNoListas) 
       );
     }else{
       return ListView.builder(
@@ -119,8 +121,8 @@ class _HomeState extends State<Home> {
         if(direccion== DismissDirection.startToEnd){
           return true;
         }else{
-          log("editar nombre");
-          _mostrarDialogo(contextCorrecto, "Editar titulo", false, index);
+          //log("editar nombre");
+          _mostrarDialogo(contextCorrecto, Languages.of(context).labelEditarTitulo, false, index);
           return false;
         }
       },
@@ -133,7 +135,7 @@ class _HomeState extends State<Home> {
       },
       child:  ListTile(
           //leading: Text(listas[index].tareas.length.toString()),
-          subtitle: listas[index].tareas.length==1?Text('${listas[index].tareas.length.toString()} tarea'): Text('${listas[index].tareas.length.toString()} tareas'),
+          subtitle: listas[index].tareas.length==1?Text('${listas[index].tareas.length.toString()} ${Languages.of(context).labeltarea}'): Text('${listas[index].tareas.length.toString()} ${Languages.of(context).labelTareas}'),
           title: Hero(
             tag: listas[index].id,
             child: Text(listas[index].nombreLista,style: style,)),
@@ -157,18 +159,19 @@ class _HomeState extends State<Home> {
         return AlertDialog(
           title: Text(texto),
           content: TextField(
+            autofocus: true,
             controller: myController,
           ),
           actions: [
             FlatButton(
-              child: Text("Cancelar"),
+              child: Text(Languages.of(context).labelCancelar),
               onPressed: () =>{
                 //myController.dispose(),
                 Navigator.pop(context, true)
               },
             ),
             FlatButton(
-              child: Text(nuevo?"Crear":"Guardar"),
+              child: Text(nuevo?Languages.of(context).labelCrear:Languages.of(context).labelGuardar),
               onPressed: () =>{
                 if(myController.text!=null && myController.text.trim()!=''){
                   if(nuevo){
@@ -228,10 +231,8 @@ class _HomeState extends State<Home> {
 
       listas.removeAt(index);
       SharedPref.setListas(listas);
-      log('eliminar lista $index');
+      //log('eliminar lista $index');
       _renovarEstado();
-    }else{
-      log("editar Lista");
     }
     
   }
