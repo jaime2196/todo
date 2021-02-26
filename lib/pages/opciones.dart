@@ -105,6 +105,7 @@ class _OpcionesPageState extends State<OpcionesPage> {
           ListTile(
             title: Center(
               child: RaisedButton(
+                color: Colors.blue[200],
                 child: Text(Languages.of(context).labelMostrar),
                 onPressed: (){
                   SharedPref.setPrimeraVez(true);

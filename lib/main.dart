@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:to_do/pages/detalleLista.dart';
 import 'package:to_do/pages/home.dart';
+import 'package:to_do/pages/informacion.dart';
 import 'package:to_do/pages/opciones.dart';
 import 'package:to_do/services/SharedPref.dart';
 
@@ -55,6 +56,7 @@ class _MyAppState extends State<MyApp> {
         'home': (BuildContext context) => Home(),
         'detalles': (BuildContext context) => DetalleLista(),
         'opciones': (BuildContext context) => OpcionesPage(),
+        'informacion': (BuildContext context) => InformacionPage(),
       },
       locale: _locale,
       supportedLocales: [

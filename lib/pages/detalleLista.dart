@@ -4,7 +4,7 @@ import 'package:to_do/models/Lista.dart';
 
 import 'package:to_do/services/SharedPref.dart';
 import 'package:to_do/util/tutorialHelper.dart';
-import 'dart:developer';
+
 import 'package:to_do/util/utils.dart';
 import 'package:tutorial/tutorial.dart';
 
@@ -51,7 +51,7 @@ class _DetalleListaState extends State<DetalleLista> {
 
     if(SharedPref.isPrimeraVez() && tutorial1){
       tutorial1=false;
-      Future.delayed(Duration(milliseconds: 3000),(){
+      Future.delayed(Duration(milliseconds: 1000),(){
         itemTutorial.add(TutorialHelper.getAyuda(keyInput, "Escribir",ShapeFocus.square),);
         itemTutorial.add(TutorialHelper.getAyuda(keyCheck, "Puede marcar la tarea como completada",ShapeFocus.oval));
         itemTutorial.add(TutorialHelper.getAyuda(keyText, "Aquí se muestra el título de su tarea",ShapeFocus.square));

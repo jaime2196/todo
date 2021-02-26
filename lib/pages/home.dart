@@ -89,7 +89,7 @@ class _HomeState extends State<Home> {
         
       });
     }else if(Languages.of(context).labelInformacion==value){
-      log("informacion");
+      Navigator.pushNamed(context, "informacion");
     }
 }
 

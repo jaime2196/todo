@@ -34,6 +34,8 @@ dependencies:
   json_serializable: ^3.5.1
   tutorial: ^1.0.7
   devicelocale: ^0.3.3
+  package_info: ^0.4.3+4
+  url_launcher: ^5.7.10
 
 dev_dependencies:
   flutter_test:
