@@ -6,7 +6,7 @@ class LanguageEs extends Languages {
   String get appName => "To Do";
 
   @override
-  String get labelNoListas => "No hay listas, pulse el boton para añadir";
+  String get labelNoListas => "No hay listas, pulse el botón para añadir";
 
   @override
   
@@ -96,7 +96,7 @@ class LanguageEs extends Languages {
   String get tutorialHome => "Pulse en el botón para crear su primera lista";
 
   @override
-  String get tutorialHome2 => "Desde opciones puedes cambiar el idioma o el tema de la app.\nEn información puedes consultar información adicional sobre la app";
+  String get tutorialHome2 => "Desde opciones puedes cambiar el idioma o el tema de la app.\nEn información puedes consultar información adicional sobre la App";
 
   @override
   String get tutorialToque => "Toque para continuar";
