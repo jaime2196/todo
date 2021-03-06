@@ -72,7 +72,8 @@ class _InformacionPageState extends State<InformacionPage> {
                 Text('Nombre del paquete: '+snapshot.data.packageName, style:style),
                 Text('Versión:'+snapshot.data.version, style:style),
                 Text('Numero de compilación: '+snapshot.data.buildNumber, style:style),
-                enlace("App desarrollada en ", "Flutter", "https://flutter.dev/", Icons.home_repair_service_outlined),
+                SizedBox(height: 15),
+                enlace("App desarrollada en ", "Flutter", "https://flutter.dev/", null),
                 SizedBox(height: 10,)
               ],
             ),
@@ -114,9 +115,10 @@ class _InformacionPageState extends State<InformacionPage> {
     return new RichText(
       text: new TextSpan(
         children: [
+          icon!=null?
           WidgetSpan(
             child: Icon(icon, size: 25),
-          ),
+          ):TextSpan(text: ''),
           new TextSpan(
             text: " "+texto,
             style: new TextStyle(color: Colors.black,fontSize: fontSize),
