@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:to_do/i18n/Languages.dart';
 import 'package:to_do/services/SharedPref.dart';
+import 'package:to_do/util/header_painter.dart';
 
 import '../main.dart';
 
@@ -17,6 +19,13 @@ class _OpcionesPageState extends State<OpcionesPage> {
 
   String valorDropIdioma=""; //SharedPref.getLocale().toString()=="es"?es:en;
 
+  Color currentColor = SharedPref.getColor();
+  void changeColor(Color color) =>{
+    SharedPref.setColor(color.value),
+    MyApp.setColor(context,SharedPref.getColor()),
+    setState(() => currentColor = color)
+  };
+
   
 
   @override
@@ -24,14 +33,21 @@ class _OpcionesPageState extends State<OpcionesPage> {
     valorDropIdioma=SharedPref.getLocale().toString()=="es"?es:en;
     return Scaffold(
       appBar: AppBar(title: Text(Languages.of(context).labelOpciones)),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _opcionIdioma(es,en),
-            _opcionTutorial()
-          ],
+      body: CustomPaint(
+        painter: HeaderPaintWaves(),
+        child: Container(
+          height: double.infinity,
+          child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+                _opcionIdioma(es,en),
+                _opcionTutorial(), 
+                _opcionColor()
+            ],
+          ),
         ),
+              ),
       ),
     );
   }
@@ -43,6 +59,7 @@ class _OpcionesPageState extends State<OpcionesPage> {
       valorDropIdioma=en;
     }
     return Card(
+      elevation: 20,
       margin: EdgeInsets.all(20),
       child: Column(
         children: [
@@ -56,7 +73,7 @@ class _OpcionesPageState extends State<OpcionesPage> {
                 elevation: 16,
                 underline: Container(
                   height: 2,
-                  color: Colors.blue,
+                  color: SharedPref.getColor(),
                 ),
                 
                 onChanged: (String newValue) {
@@ -97,6 +114,7 @@ class _OpcionesPageState extends State<OpcionesPage> {
 
   Widget _opcionTutorial(){
     return  Card(
+      elevation: 20,
       margin: EdgeInsets.all(20),
       child: Column(
         children: [
@@ -105,8 +123,13 @@ class _OpcionesPageState extends State<OpcionesPage> {
           ListTile(
             title: Center(
               child: RaisedButton(
-                color: Colors.blue[200],
-                child: Text(Languages.of(context).labelMostrar),
+                color: SharedPref.getColor()[800],
+                child: Text(
+                  Languages.of(context).labelMostrar, 
+                  style: TextStyle(
+                    color: SharedPref.esOscuro()?Colors.white:Colors.black
+                    ),
+                  ),
                 onPressed: (){
                   SharedPref.setPrimeraVez(true);
                 },
@@ -117,4 +140,65 @@ class _OpcionesPageState extends State<OpcionesPage> {
       ),
     );
   }
+
+  Widget _opcionColor(){
+    return  Card(
+      elevation: 20,
+      margin: EdgeInsets.all(20),
+      child: Column(
+        children: [
+          SizedBox(height: 10),
+          Text(Languages.of(context).labelCambiarColor,style: TextStyle(fontSize: 18)),
+          ListTile(
+            title: Center(
+              child: RaisedButton(
+                color: SharedPref.getColor()[800],
+                child: Text(Languages.of(context).labelCambiar, style: TextStyle(color: SharedPref.esOscuro()?Colors.white:Colors.black),),
+                onPressed: (){
+                  _mostrarDialogo(context);
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _mostrarDialogo(BuildContext context){
+    showDialog(
+      context: context,
+      builder: (BuildContext ctx){
+        return AlertDialog(
+          titlePadding: const EdgeInsets.all(0.0),
+          contentPadding: const EdgeInsets.all(0.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0),
+          ),
+          content: SingleChildScrollView(
+            child: SlidePicker(
+              pickerColor: currentColor,
+              onColorChanged: changeColor,
+              paletteType: PaletteType.rgb,
+              enableAlpha: false,
+              displayThumbColor: true,
+              showLabel: false,
+              showIndicator: true,
+              indicatorBorderRadius:
+              const BorderRadius.vertical(
+                top: const Radius.circular(25.0),
+              ),
+            ),
+          ),
+        );
+      }
+    );
+  }
+
+
+  
+
+
+
+  
 }

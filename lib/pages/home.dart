@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do/i18n/Languages.dart';
 import 'package:to_do/models/Lista.dart';
 import 'package:to_do/services/SharedPref.dart';
+import 'package:to_do/util/header_painter.dart';
 import 'package:to_do/util/tutorialHelper.dart';
 import 'dart:developer';
 import 'package:to_do/util/utils.dart';
@@ -20,11 +21,14 @@ class _HomeState extends State<Home> {
   int indiceListaSalvar;
   List<TutorialItens> itens = [];
   final keyFAB = GlobalKey();
+  final keyMenu = GlobalKey();
   bool tutorial=true;
   
   @override
   Widget build(BuildContext context) {
-    itens.add(TutorialHelper.getAyuda(keyFAB,"Pulse en el botón para crear su primera lista.", ShapeFocus.oval),);
+    itens.clear();
+    itens.add(TutorialHelper.getAyuda(keyFAB,Languages.of(context).tutorialHome, ShapeFocus.oval, Languages.of(context).tutorialToque));
+    itens.add(TutorialHelper.getAyuda(keyMenu,Languages.of(context).tutorialHome2, ShapeFocus.oval, Languages.of(context).tutorialToque));
     
   
     final snackBar = SnackBar(
@@ -46,6 +50,7 @@ class _HomeState extends State<Home> {
     
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: _crearAppBar(),
       floatingActionButton: FloatingActionButton(
         key: keyFAB,
@@ -55,7 +60,7 @@ class _HomeState extends State<Home> {
         },
       ),
       body: Builder(
-              builder: (contextCorrecto) =>Container(
+        builder: (contextCorrecto) =>Container(
           child: _evaluarYObtenerLista(listas, contextCorrecto, snackBar),
         ),
       ),
@@ -68,6 +73,7 @@ class _HomeState extends State<Home> {
         title: Text(Languages.of(context).appName),
         actions: <Widget>[
           PopupMenuButton<String>(
+            key: keyMenu,
             onSelected: handleClick,
             itemBuilder: (BuildContext context) {
               return {Languages.of(context).labelOpciones, Languages.of(context).labelInformacion}.map((String choice) {
@@ -85,9 +91,20 @@ class _HomeState extends State<Home> {
   void handleClick(String value)async {
     if(Languages.of(context).labelOpciones==value){
       await Navigator.pushNamed(context, "opciones");
-      setState(() {
+       print('regresa de opciones');
+       if(SharedPref.isPrimeraVez()){
+         tutorial=true;
+         if(tutorial){
+           Future.delayed(Duration(milliseconds: 1000),(){
+              tutorial=false;
+            Tutorial.showTutorial(context, itens);
+          });
+         }
         
-      });
+       }
+      /*setState(() {
+        
+      });*/
     }else if(Languages.of(context).labelInformacion==value){
       Navigator.pushNamed(context, "informacion");
     }
@@ -96,16 +113,25 @@ class _HomeState extends State<Home> {
 
   Widget _evaluarYObtenerLista(List<Lista> listas, BuildContext contextCorrecto, SnackBar snackBar){
     if(listas== null || listas.length==0){
-      return Center(
-        child: Text(Languages.of(context).labelNoListas) 
+      return CustomPaint(
+        painter: HeaderPaintWaves(),
+        child: Center(
+          child: Text(Languages.of(context).labelNoListas) 
+        ),
       );
     }else{
-      return ListView.builder(
-        //separatorBuilder: (context,index) => Divider(color: Colors.black,thickness: 0.2,),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: listas.length,
-         itemBuilder: (context, index) => _generarListTile(index, contextCorrecto, snackBar),
+      return CustomPaint(
+        painter: HeaderPaintWaves(),
+        child: Container(
+          height: double.infinity,
+          child: ListView.builder(
+            //separatorBuilder: (context,index) => Divider(color: Colors.black,thickness: 0.2,),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: listas.length,
+             itemBuilder: (context, index) => _generarListTile(index, contextCorrecto, snackBar),
+          ),
+        ),
       );
     }
   }
@@ -133,16 +159,20 @@ class _HomeState extends State<Home> {
         log(direccion.index.toString()),
         _eliminaroEditarLista(index, contextCorrecto, snackBar, direccion),
       },
-      child:  ListTile(
-          //leading: Text(listas[index].tareas.length.toString()),
-          subtitle: listas[index].tareas.length==1?Text('${listas[index].tareas.length.toString()} ${Languages.of(context).labeltarea}'): Text('${listas[index].tareas.length.toString()} ${Languages.of(context).labelTareas}'),
-          title: Hero(
-            tag: listas[index].id,
-            child: Text(listas[index].nombreLista,style: style,)),
-          onTap: ()=>{
-            irDetallesLista(index),
-          },
-        ),
+      child:  Card(
+        elevation: 20,
+          child: ListTile(
+            //leading: Text(listas[index].tareas.length.toString()),
+            subtitle: listas[index].tareas.length==1?Text('${listas[index].tareas.length.toString()} ${Languages.of(context).labeltarea}'): Text('${listas[index].tareas.length.toString()} ${Languages.of(context).labelTareas}'),
+            title: Hero(
+              tag: listas[index].id,
+              child: Text(listas[index].nombreLista,style: style,)),
+            onTap: ()=>{
+              irDetallesLista(index),
+            },
+
+          ),
+      ),
       
     );
   }

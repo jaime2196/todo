@@ -29,8 +29,17 @@ abstract class Languages {
   String get labelIdioma;
   String get labelMostrarTutorial;
   String get labelMostrar;
-  //Tutorial
-  
+  String get labelCambiar;
+  String get labelCambiarColor;
+  //Tutorial 
+  String get tutorialHome;
+  String get tutorialToque;
+  String get tutorialDetalle1;
+  String get tutorialDetalle2;
+  String get tutorialDetalle3;
+  String get tutorialDetalle4;
+  String get tutorialHome2;
+
 
 
 }

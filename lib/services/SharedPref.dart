@@ -10,7 +10,7 @@ import '../main.dart';
 
 
 class SharedPref{
-
+  
   static SharedPreferences _sharedPreferences;
   static init() async{
     if (_sharedPreferences == null) {
@@ -97,6 +97,40 @@ class SharedPref{
   static void changeLanguage(BuildContext context, String selectedLanguageCode) async {
     var _locale =  setLocale(selectedLanguageCode);
     MyApp.setLocale(context, _locale);
-}
+  }
+
+  static void setColor(int color){
+    _sharedPreferences.setInt('colorTema', color);
+  }
+
+  static MaterialColor getColor(){
+    int codColor= _sharedPreferences.getInt('colorTema');
+    if(codColor==null || codColor==0){
+      return Colors.blue;
+    }
+    Color color= Color(codColor);
+    Map<int, Color> colorCodes = {
+      50: Color.fromRGBO(color.red, color.green, color.blue, .1),
+      100: Color.fromRGBO(color.red, color.green, color.blue, .2),
+      200: Color.fromRGBO(color.red, color.green, color.blue, .3),
+      300: Color.fromRGBO(color.red, color.green, color.blue, .4),
+      400: Color.fromRGBO(color.red, color.green, color.blue, .5),
+      500: Color.fromRGBO(color.red, color.green, color.blue, .6),
+      600: Color.fromRGBO(color.red, color.green, color.blue, .7),
+      700: Color.fromRGBO(color.red, color.green, color.blue, .8),
+      800: Color.fromRGBO(color.red, color.green, color.blue, .9),
+      900: Color.fromRGBO(color.red, color.green, color.blue, 1),
+    };
+
+    MaterialColor matColor = new MaterialColor(color.value, colorCodes);
+    
+    return matColor;
+  }
+
+  static bool esOscuro(){
+    Color color= SharedPref.getColor();
+    double darkness = 1-(0.299*color.red + 0.587*color.green + 0.114*color.green)/255;
+    return !(darkness<0.5);
+  }
 
 }

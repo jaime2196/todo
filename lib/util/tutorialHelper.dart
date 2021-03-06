@@ -4,7 +4,7 @@ import 'package:tutorial/tutorial.dart';
 
 class TutorialHelper{
 
-  static TutorialItens getAyuda(GlobalKey key, String texto, ShapeFocus forma){
+  static TutorialItens getAyuda(GlobalKey key, String texto, ShapeFocus forma, String textoContinuar){
     return TutorialItens(
       globalKey: key,
       touchScreen: true,
@@ -19,14 +19,22 @@ class TutorialHelper{
               height: 50,
             )
           ],
-        widgetNext: Text(
-            "Toque para continuar",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 20
-            ),
-          ),
+        widgetNext: Row(
+          children: [
+            Icon(Icons.forward, color: Colors.white,),
+            SizedBox(width: 5),
+            Text(
+                textoContinuar,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20
+                ),
+              ),
+            SizedBox(width: 5),
+            Icon(Icons.forward, color: Colors.white,),
+          ],
+        ),
           shapeFocus: forma
       );
     

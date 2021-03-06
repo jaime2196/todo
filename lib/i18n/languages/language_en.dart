@@ -66,5 +66,32 @@ class LanguageEn extends Languages {
   @override
   String get labelDeshacer => "Undo";
 
+  @override
+  String get labelCambiar => "Change";
+
+  @override
+  String get labelCambiarColor => "Change color";
+
+  @override
+  String get tutorialDetalle1 => "To add tasks, type here and hit the 'Enter' key on your keyboard";
+
+  @override
+  String get tutorialDetalle2 => "You can mark the task as completed";
+
+  @override
+  String get tutorialDetalle3 => "Your task title is displayed here";
+
+  @override
+  String get tutorialDetalle4 => "Swipe right to delete your task.\nSwipe left to edit your task";
+
+  @override
+  String get tutorialHome => "Tap on the button to create your first list";
+
+  @override
+  String get tutorialToque => "Tap to continue";
+
+  @override
+  String get tutorialHome2 => "From options you can change the language or theme of the app.\nIn information you can consult additional information about the app";
+
   
 }

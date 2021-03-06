@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:to_do/i18n/Languages.dart';
+import 'package:to_do/util/header_painter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -25,13 +26,19 @@ class _InformacionPageState extends State<InformacionPage> {
         future: getDatos(),
         builder: (BuildContext context, AsyncSnapshot<PackageInfo> snapshot){
           if(snapshot.hasData){
-            return SingleChildScrollView(
-              child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _cardDatosDev(),
-                _cardDatosApp(snapshot),
-              ],
+            return CustomPaint(
+              painter: HeaderPaintWaves(),
+              child: Container(
+                height: double.infinity,
+                child: SingleChildScrollView(
+                  child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _cardDatosDev(),
+                    _cardDatosApp(snapshot),
+                  ],
+                  ),
+                ),
               ),
             );
           }else{
@@ -51,6 +58,7 @@ class _InformacionPageState extends State<InformacionPage> {
   Widget _cardDatosApp(AsyncSnapshot<PackageInfo> snapshot){
     final style= TextStyle(fontSize: fontSize);
     return Card(
+      elevation: 20,
       margin: EdgeInsets.all(20),
       child: Column(
         children: [
@@ -76,6 +84,7 @@ class _InformacionPageState extends State<InformacionPage> {
 
   Widget _cardDatosDev(){
     return Card(
+      elevation: 20,
       margin: EdgeInsets.all(20),
       child: Column(
         children: [

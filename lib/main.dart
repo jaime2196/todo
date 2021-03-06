@@ -21,6 +21,11 @@ class MyApp extends StatefulWidget {
     state.setLocale(newLocale);
   }
 
+  static void setColor(BuildContext context, MaterialColor color) {
+    var state = context.findAncestorStateOfType<_MyAppState>();
+    state.setColor(color);
+  }
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -28,6 +33,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   Locale _locale;
+  MaterialColor _color;
 
   void setLocale(Locale locale) {
     setState(() {
@@ -35,10 +41,19 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void setColor(MaterialColor color) {
+    setState(() {
+      _color = color;
+    });
+  }
+
+
+
   @override
   void didChangeDependencies() async {
     setState(() {
       _locale= SharedPref.getLocale();
+      _color=SharedPref.getColor();
     });
     super.didChangeDependencies();
   }
@@ -49,7 +64,7 @@ class _MyAppState extends State<MyApp> {
       title: 'To Do',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: _color,
       ),
       home: Home(),
       routes: {

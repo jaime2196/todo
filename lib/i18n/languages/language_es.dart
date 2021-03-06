@@ -74,6 +74,31 @@ class LanguageEs extends Languages {
   @override
   String get labelDeshacer => "Deshacer";
 
+  @override
+  String get labelCambiar => "Cambiar";
   
+  @override
+  String get labelCambiarColor => "Cambiar color";
+
+  @override
+  String get tutorialDetalle1 => "Para añadir tareas, escriba aquí y pulse la tecla 'Enter' en su teclado";
+
+  @override
+  String get tutorialDetalle2 => "Puede marcar la tarea como completada";
+
+  @override
+  String get tutorialDetalle3 => "Aquí se muestra el título de su tarea";
+
+  @override
+  String get tutorialDetalle4 => "Deslice hacia la derecha para elimiar su tarea.\nDeslice hacia la izquierda para editar el título de su tarea";
+
+  @override
+  String get tutorialHome => "Pulse en el botón para crear su primera lista";
+
+  @override
+  String get tutorialHome2 => "Desde opciones puedes cambiar el idioma o el tema de la app.\nEn información puedes consultar información adicional sobre la app";
+
+  @override
+  String get tutorialToque => "Toque para continuar";
   
 }

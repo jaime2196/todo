@@ -3,6 +3,7 @@ import 'package:to_do/i18n/Languages.dart';
 import 'package:to_do/models/Lista.dart';
 
 import 'package:to_do/services/SharedPref.dart';
+import 'package:to_do/util/header_painter.dart';
 import 'package:to_do/util/tutorialHelper.dart';
 
 import 'package:to_do/util/utils.dart';
@@ -23,6 +24,7 @@ class _DetalleListaState extends State<DetalleLista> {
   final keyInput = GlobalKey();
   final keyCheck = GlobalKey();
   final keyText = GlobalKey();
+  final keyCard = GlobalKey();
   List<TutorialItens> itemTutorial = [];
   bool tutorial1=true;
   
@@ -52,9 +54,10 @@ class _DetalleListaState extends State<DetalleLista> {
     if(SharedPref.isPrimeraVez() && tutorial1){
       tutorial1=false;
       Future.delayed(Duration(milliseconds: 1000),(){
-        itemTutorial.add(TutorialHelper.getAyuda(keyInput, "Escribir",ShapeFocus.square),);
-        itemTutorial.add(TutorialHelper.getAyuda(keyCheck, "Puede marcar la tarea como completada",ShapeFocus.oval));
-        itemTutorial.add(TutorialHelper.getAyuda(keyText, "Aquí se muestra el título de su tarea",ShapeFocus.square));
+        itemTutorial.add(TutorialHelper.getAyuda(keyInput, Languages.of(context).tutorialDetalle1,ShapeFocus.square, Languages.of(context).tutorialToque));
+        itemTutorial.add(TutorialHelper.getAyuda(keyCheck, Languages.of(context).tutorialDetalle2,ShapeFocus.oval, Languages.of(context).tutorialToque));
+        itemTutorial.add(TutorialHelper.getAyuda(keyText, Languages.of(context).tutorialDetalle3,ShapeFocus.square, Languages.of(context).tutorialToque));
+        itemTutorial.add(TutorialHelper.getAyuda(keyCard, Languages.of(context).tutorialDetalle4,ShapeFocus.square, Languages.of(context).tutorialToque));
         Tutorial.showTutorial(context, itemTutorial);
         SharedPref.setPrimeraVez(false);
       });
@@ -62,6 +65,7 @@ class _DetalleListaState extends State<DetalleLista> {
     
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar( title: 
         Hero(
           tag: lista.id,
@@ -98,27 +102,34 @@ class _DetalleListaState extends State<DetalleLista> {
   }
 
   Widget _bodyScafold(TextEditingController myController, SnackBar snackBar, BuildContext contextGeneral){
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            key: keyInput,
-            decoration: InputDecoration(
-              hintText: Languages.of(context).labelNombreTarea
+    return CustomPaint(
+      painter: HeaderPaintWaves(),
+      child: Column(
+        children: [
+          SizedBox(height: 10),
+          Card(
+            elevation: 20,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                key: keyInput,
+                decoration: InputDecoration(
+                  hintText: Languages.of(context).labelNombreTarea
+                ),
+                controller: myController,
+                onSubmitted: (value) =>{
+                  if(value!=null && value.length!=0){
+                    addTarea(value),
+                    myController.clear(),
+                  }
+                },
+              ),
             ),
-            controller: myController,
-            onSubmitted: (value) =>{
-              if(value!=null && value.length!=0){
-                addTarea(value),
-                myController.clear(),
-              }
-            },
           ),
-        ),
-        SizedBox(height: 10),
-        _evaluarTareas(snackBar, contextGeneral, myController),
-      ],
+          SizedBox(height: 10),
+          _evaluarTareas(snackBar, contextGeneral, myController),
+        ],
+      ),
     );
   }
 
@@ -127,10 +138,14 @@ class _DetalleListaState extends State<DetalleLista> {
       return Expanded(
         child: ListView(
           children: [
-            ListTile(
-              leading: Checkbox(key: keyCheck,value: false, onChanged: null),
-              title: Text("Título de la tarea", key:keyText),
-              onTap: null
+            Card(
+              key: keyCard,
+              elevation: 20,
+              child: ListTile(
+                leading: Checkbox(key: keyCheck,value: false, onChanged: null),
+                title: Text(Languages.of(context).labelNombreTarea, key:keyText),
+                onTap: null
+              ),
             ),
           ],
         ),
@@ -147,8 +162,14 @@ class _DetalleListaState extends State<DetalleLista> {
       ),
         );
       }else{
-        return Center(
-          child: Text(Languages.of(context).labelNoTareas),
+        return Card(
+          elevation: 20,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Center(
+              child: Text(Languages.of(context).labelNoTareas),
+            ),
+          ),
         );
       }
     }
@@ -178,14 +199,17 @@ class _DetalleListaState extends State<DetalleLista> {
         
       },
       key: UniqueKey(),
-      child: ListTile(
-        leading: Checkbox(value: lista.tareas[indexTareas].completada, onChanged: (nuevoValor)=>{
-          cambiarEstadoTarea(indexTareas, nuevoValor)
-        }),
-        title: Text(lista.tareas[indexTareas].nombre),
-        onTap: ()=>{
-            cambiarEstadoTarea(indexTareas, !lista.tareas[indexTareas].completada)
-        },
+      child: Card(
+        elevation: 20,
+        child: ListTile(
+          leading: Checkbox(value: lista.tareas[indexTareas].completada, onChanged: (nuevoValor)=>{
+            cambiarEstadoTarea(indexTareas, nuevoValor)
+          }),
+          title: Text(lista.tareas[indexTareas].nombre),
+          onTap: ()=>{
+              cambiarEstadoTarea(indexTareas, !lista.tareas[indexTareas].completada)
+          },
+        ),
       ),
     );
     
