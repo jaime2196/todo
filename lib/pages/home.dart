@@ -24,12 +24,13 @@ class _HomeState extends State<Home> {
   final keyMenu = GlobalKey();
   bool tutorial=true;
   
+  
   @override
   Widget build(BuildContext context) {
     itens.clear();
     itens.add(TutorialHelper.getAyuda(keyFAB,Languages.of(context).tutorialHome, ShapeFocus.oval, Languages.of(context).tutorialToque));
     itens.add(TutorialHelper.getAyuda(keyMenu,Languages.of(context).tutorialHome2, ShapeFocus.oval, Languages.of(context).tutorialToque));
-    
+    SharedPref.initLocale(context);
   
     final snackBar = SnackBar(
       content: Text(Languages.of(context).labelTareaEliminada),

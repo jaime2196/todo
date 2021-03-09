@@ -1,7 +1,6 @@
 
 
 
-import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do/models/Lista.dart';
@@ -16,9 +15,15 @@ class SharedPref{
     if (_sharedPreferences == null) {
       _sharedPreferences = await SharedPreferences.getInstance();
     }
-    String locale = await Devicelocale.currentLocale;
+    /*String locale = await Devicelocale.currentLocale;
     _deviceLanguage=locale.split("_")[0];
-    print(_deviceLanguage);
+    print(_deviceLanguage);*/
+  }
+
+  static initLocale(BuildContext context){
+    Locale myLocale = Localizations.localeOf(context);
+    _deviceLanguage="es";
+    print(myLocale.languageCode);
   }
 
   static String _deviceLanguage="en";
