@@ -71,6 +71,7 @@ class _HomeState extends State<Home> {
 
   Widget _crearAppBar(){
     return AppBar(
+        centerTitle: false,
         title: Text(Languages.of(context).appName),
         actions: <Widget>[
           PopupMenuButton<String>(
