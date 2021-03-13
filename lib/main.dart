@@ -65,6 +65,11 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: _color,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          elevation: 50,
+          backgroundColor: _color,
+          foregroundColor: SharedPref.esOscuro()?Colors.white:Colors.black
+        ),
       ),
       home: Home(),
       routes: {

@@ -50,7 +50,7 @@ class SharedPref{
     if(listas!=null){
       listas.add(lista);
     }else{
-      listas = new List<Lista>();
+      listas = [];
       listas.add(lista);
     }
     setListas(listas);

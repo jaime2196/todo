@@ -122,8 +122,9 @@ class _OpcionesPageState extends State<OpcionesPage> {
           Text(Languages.of(context).labelMostrarTutorial,style: TextStyle(fontSize: 18)),
           ListTile(
             title: Center(
-              child: RaisedButton(
-                color: SharedPref.getColor()[800],
+              child: ElevatedButton(
+                //style: ButtonStyle(co:  SharedPref.getColor()[800]),
+                //color: SharedPref.getColor()[800],
                 child: Text(
                   Languages.of(context).labelMostrar, 
                   style: TextStyle(
@@ -151,8 +152,8 @@ class _OpcionesPageState extends State<OpcionesPage> {
           Text(Languages.of(context).labelCambiarColor,style: TextStyle(fontSize: 18)),
           ListTile(
             title: Center(
-              child: RaisedButton(
-                color: SharedPref.getColor()[800],
+              child: ElevatedButton(
+                //color: SharedPref.getColor()[800],
                 child: Text(Languages.of(context).labelCambiar, style: TextStyle(color: SharedPref.esOscuro()?Colors.white:Colors.black),),
                 onPressed: (){
                   _mostrarDialogo(context);

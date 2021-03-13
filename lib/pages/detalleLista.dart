@@ -84,7 +84,7 @@ class _DetalleListaState extends State<DetalleLista> {
     Tarea tarea= Tarea( nombre: nombreTarea,completada: false);
 
     if(lista.tareas==null){
-      lista.tareas = new List<Tarea>();
+      lista.tareas = [];
     }
     lista.tareas.add(tarea);
     List<Lista> listas= SharedPref.getListas();
@@ -222,7 +222,9 @@ class _DetalleListaState extends State<DetalleLista> {
     tareaSalvar=lista.tareas[index];
     indiceTareaSalvar=index;
     lista.tareas.removeAt(index);
-    Scaffold.of(contextGeneral).showSnackBar(snackBar);
+    
+    //Scaffold.of(contextGeneral).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
     List<Lista> listas= SharedPref.getListas();
     listas.removeAt(indice);

@@ -4,7 +4,6 @@ import 'package:to_do/models/Lista.dart';
 import 'package:to_do/services/SharedPref.dart';
 import 'package:to_do/util/header_painter.dart';
 import 'package:to_do/util/tutorialHelper.dart';
-import 'dart:developer';
 import 'package:to_do/util/utils.dart';
 import 'package:tutorial/tutorial.dart';
 
@@ -93,7 +92,6 @@ class _HomeState extends State<Home> {
   void handleClick(String value)async {
     if(Languages.of(context).labelOpciones==value){
       await Navigator.pushNamed(context, "opciones");
-       print('regresa de opciones');
        if(SharedPref.isPrimeraVez()){
          tutorial=true;
          if(tutorial){
@@ -158,7 +156,7 @@ class _HomeState extends State<Home> {
       secondaryBackground: Util.getBackgrodundDismissible(Icons.edit, Colors.blue, false),
       key: UniqueKey(),
       onDismissed: (direccion)=>{
-        log(direccion.index.toString()),
+        //log(direccion.index.toString()),
         _eliminaroEditarLista(index, contextCorrecto, snackBar, direccion),
       },
       child:  Card(
@@ -195,14 +193,14 @@ class _HomeState extends State<Home> {
             controller: myController,
           ),
           actions: [
-            FlatButton(
+            TextButton(
               child: Text(Languages.of(context).labelCancelar),
               onPressed: () =>{
                 //myController.dispose(),
                 Navigator.pop(context, true)
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text(nuevo?Languages.of(context).labelCrear:Languages.of(context).labelGuardar),
               onPressed: () =>{
                 if(myController.text!=null && myController.text.trim()!=''){
@@ -229,7 +227,7 @@ class _HomeState extends State<Home> {
 
 
   _nuevaLista(TextEditingController _controller){
-    Lista lista= new Lista(nombreLista: _controller.text, tareas: List<Tarea>(), id: DateTime.now().millisecondsSinceEpoch);
+    Lista lista= new Lista(nombreLista: _controller.text, tareas: [], id: DateTime.now().millisecondsSinceEpoch);
     SharedPref.addLista(lista);
   }
 
@@ -259,7 +257,7 @@ class _HomeState extends State<Home> {
     if(direccion== DismissDirection.startToEnd){
       listaSalvar=listas[index];
       indiceListaSalvar=index;
-      Scaffold.of(contextCorrecto).showSnackBar(snackBar);
+      ScaffoldMessenger.of(contextCorrecto).showSnackBar(snackBar);
 
       listas.removeAt(index);
       SharedPref.setListas(listas);

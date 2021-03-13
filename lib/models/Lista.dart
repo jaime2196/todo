@@ -58,7 +58,7 @@ class Tarea {
 class UtilLista{
 
   static List<Lista> generateLista(List<dynamic> list){
-    List<Lista> listaListas= new List<Lista>();
+    List<Lista> listaListas=  [];
     Lista lista;
     list.forEach((element) { 
       lista = new Lista(nombreLista: element["nombreLista"], tareas: null);
